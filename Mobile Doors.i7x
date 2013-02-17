@@ -150,17 +150,32 @@ Include (-
 
 Chapter 4 - Updating
 
-Section 4.1 - Phrase
-
 To replace (query - object) in (D - door) with (replacement - object),
 	preserving routes, and/or
 	on the opposite side:
-	(- UpdateDoor({D}, {query}, {replacement}, {phrase options}); -).
+	(- SearchDoor({D}, {query}, {replacement}, {phrase options}, true); -).
 
-Section 4.2 - I6 implementation
+Chapter 5 - Querying
+
+Section 5.1 - Room query
+
+To decide what object is room matching (query - object) in (D - door):
+	(- SearchDoor({D}, {query}, IK1_First, 2) -).
+
+Section 5.2 - Direction query
+
+To decide what object is direction matching (query - object) in (D - door):
+	(- SearchDoor({D}, {query}, IK3_First, 2) -).
+
+Section 5.2 - Predicate
+
+To decide whether (query - object) is matched in (D - door):
+	(- (SearchDoor({D}, {query})) -).
+
+Chapter 6 - Searching a door
 
 Include (-
-[ UpdateDoor d old new opt i j;
+[ SearchDoor d old new opt modify i j;
 	if (old == nothing && new == nothing) return;
 	RemoveFromPlay(d, opt);
 	for (i = 0: i < 4: i++) {
@@ -172,24 +187,28 @@ Include (-
 			if (old == nothing) continue;
 			j = (j | 2) & (~(j & 2)); ! of the other class (room vs. direction)
 		}
-		(d.&mobile_door)-->j = new;
+		if (modify == true)
+			(d.&mobile_door)-->j = new;
+		else 
+			return (d.&mobile_door)-->j;
 	}
 	if ((d.&mobile_door)-->0 ~= nothing && (d.&mobile_door)-->2 ~= nothing)
 		AssertMapConnection((d.&mobile_door)-->0, (d.&mobile_door)-->2, d);
 	if ((d.&mobile_door)-->1 ~= nothing && (d.&mobile_door)-->3 ~= nothing)
 		AssertMapConnection((d.&mobile_door)-->1, (d.&mobile_door)-->3, d);
 	MoveFloatingObjects();
+	rfalse;
 ];
 -).
 
-Chapter 5 - Moving
+Chapter 7 - Moving
 
-Section 5.1 - Phrase
+Section 7.1 - Phrase
 
-To move (D - door) to (C1 - object) from/of (R1 - room) and (C2 - direction) from/of (R2 - room), preserving routes:
+To move (D - door) to (C1 - object) from/of (R1 - object) and (C2 - direction) from/of (R2 - object), preserving routes:
 	(- MoveDoor({D}, {R1}, {R2}, {C1}, {C2}, {phrase options}); -).
 
-Section 5.2 - I6 implementation
+Section 7.2 - I6 implementation
 
 Include (-
 [ MoveDoor d room1 room2 dir1 dir2 opt;
