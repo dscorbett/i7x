@@ -162,7 +162,7 @@ Section 4.2 - I6 implementation
 Include (-
 [ UpdateDoor d old new opt i j;
 	if (old == nothing && new == nothing) return;
-	RemoveFromPlay(d, opt & 1);
+	RemoveFromPlay(d, opt);
 	for (i = 0: i < 4: i++) {
 		if ((d.&mobile_door)-->i ~= old) continue;
 		if (opt & 2)
@@ -174,6 +174,30 @@ Include (-
 		}
 		(d.&mobile_door)-->j = new;
 	}
+	if ((d.&mobile_door)-->0 ~= nothing && (d.&mobile_door)-->2 ~= nothing)
+		AssertMapConnection((d.&mobile_door)-->0, (d.&mobile_door)-->2, d);
+	if ((d.&mobile_door)-->1 ~= nothing && (d.&mobile_door)-->3 ~= nothing)
+		AssertMapConnection((d.&mobile_door)-->1, (d.&mobile_door)-->3, d);
+	MoveFloatingObjects();
+];
+-).
+
+Chapter 5 - Moving
+
+Section 5.1 - Phrase
+
+To move (D - door) to (C1 - object) from/of (R1 - room) and (C2 - direction) from/of (R2 - room), preserving routes:
+	(- MoveDoor({D}, {R1}, {R2}, {C1}, {C2}, {phrase options}); -).
+
+Section 5.2 - I6 implementation
+
+Include (-
+[ MoveDoor d room1 room2 dir1 dir2 opt;
+	RemoveFromPlay(d, opt);
+	(d.&mobile_door)-->0 = room1;
+	(d.&mobile_door)-->1 = room2;
+	(d.&mobile_door)-->2 = dir1;
+	(d.&mobile_door)-->3 = dir2;
 	if ((d.&mobile_door)-->0 ~= nothing && (d.&mobile_door)-->2 ~= nothing)
 		AssertMapConnection((d.&mobile_door)-->0, (d.&mobile_door)-->2, d);
 	if ((d.&mobile_door)-->1 ~= nothing && (d.&mobile_door)-->3 ~= nothing)
