@@ -41,8 +41,22 @@ To decide what list of angles is (X - list of angles) plus/+ (u - direction):
 
 To decide what list of angles is (X - list of angles) plus/+ (Y - list of angles):
 	extend Y to the number of entries in X entries;
+	let z be true;
 	repeat with n running from 1 to the number of entries in X:
-		now entry n of X is entry n of X plus entry n of Y;
+		now entry n of X is entry n of X modulo 360 degrees;
+		now entry n of Y is entry n of Y modulo 360 degrees;
+		let d be entry n of X minus entry n of Y;
+		if d is less than 0 degrees:
+			let d be 0 degrees minus d;
+		if d is less than 180 degrees:
+			if d is not 0 degrees:
+				now z is false;
+			now entry n of X is (entry n of X plus entry n of Y) divided by 2;
+		otherwise if d is not 180 degrees:
+			now z is false;
+			now entry n of X is (entry n of X plus entry n of Y plus 180 degrees) divided by 2;
+	if z is true:
+		decide on {};
 	decide on X.
 
 To decide what list of angles is (u - direction) minus/- (v - direction):
@@ -56,8 +70,22 @@ To decide what list of angles is (X - list of angles) minus/- (u - direction):
 
 To decide what list of angles is (X - list of angles) minus/- (Y - list of angles):
 	extend Y to the number of entries in X entries;
+	let z be true;
 	repeat with n running from 1 to the number of entries in X:
-		now entry n of X is entry n of X minus entry n of Y;
+		now entry n of X is entry n of X modulo 360 degrees;
+		now entry n of Y is entry n of Y modulo 360 degrees;
+		let d be entry n of X minus entry n of Y;
+		if d is less than 0 degrees:
+			let d be 0 degrees minus d;
+		if d is less than 180 degrees:
+			if d is not 0 degrees:
+				now z is false;
+			now entry n of X is (entry n of X minus entry n of Y) divided by 2;
+		otherwise if d is not 180 degrees:
+			now z is false;
+			now entry n of X is (entry n of X minus entry n of Y plus 180 degrees) divided by 2;
+	if z is true:
+		decide on {};
 	decide on X.
 
 To decide what list of angles is (X - list of angles) normalized:
