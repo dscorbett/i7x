@@ -62,13 +62,20 @@ To decide what list of angles is (X - list of angles) minus/- (Y - list of angle
 
 To decide what list of angles is (X - list of angles) normalized:
 	let p be false;
+	let z be false;
 	let n be the number of entries in X;
 	while n is at least 1:
+		if z is true:
+			now entry n of X is 0 degrees;
+			decrement n;
+			next;
 		if p is true:
 			now entry n of X is entry n of X minus 180 degrees;
 			now p is false;
 		now entry n of X is entry n of X modulo 360 degrees;
-		if n is not 1 and entry n of X is greater than 180 degrees:
+		if entry n of X is 0 degrees or entry n of X is 180 degrees:
+			now z is true;
+		otherwise if n is not 1 and entry n of X is greater than 180 degrees:
 			now entry n of X is 360 degrees minus entry n of X;
 			now p is true;
 		decrement n;
