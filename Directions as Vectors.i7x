@@ -1,30 +1,26 @@
 Directions as Vectors by David Corbett begins here.
 
-Section - Angle kind (for use without Metric Units by Graham Nelson)
+Section - Angle (for use without Metric Units by Graham Nelson)
 
 Angle is a kind of value.
 1 degree (in degrees, singular) or 2 degrees (in degrees, plural) specifies an angle.
 
-Section - Angles
+Section - The angle list
 
-A direction has an angle called the azimuth.
-The azimuth of a direction is usually 0 degrees.
-
-A direction has an angle called the inclination.
-The inclination of a direction is usually 90 degrees.
+A direction has a list of angles called the angle list.
 
 Section - Default angles for the standard directions
 
-The azimuth of northeast is 45 degrees.
-The azimuth of east is 90 degrees.
-The azimuth of southeast is 135 degrees.
-The azimuth of south is 180 degrees.
-The azimuth of southwest is 225 degrees.
-The azimuth of west is 270 degrees.
-The azimuth of northwest is 315 degrees.
-
-The inclination of up is 0 degrees.
-The inclination of down is 180 degrees.
+The angle list of north is {0 degrees, 90 degrees}.
+The angle list of northeast is {45 degrees, 90 degrees}.
+The angle list of east is {90 degrees, 90 degrees}.
+The angle list of southeast is {135 degrees, 90 degrees}.
+The angle list of south is {180 degrees, 90 degrees}.
+The angle list of southwest is {225 degrees, 90 degrees}.
+The angle list of west is {270 degrees, 90 degrees}.
+The angle list of northwest is {315 degrees, 90 degrees}.
+The angle list of up is {0 degrees, 0 degrees}.
+The angle list of down is {0 degrees, 180 degrees}.
 
 Section - Transformations
 
@@ -34,23 +30,54 @@ To decide what K is (n - arithmetic value of kind K) modulo/mod (modulus - K):
 		let the result be the result plus the modulus;
 	decide on the result.
 
-To decide what direction is (alpha - angle) clockwise from/of (u - direction):
-	decide on the direction at the azimuth of u + alpha and the inclination of u.
+To decide what list of angles is (u - direction) plus/+ (v - direction):
+	decide on the angle list of u plus the angle list of v.
 
-To decide what direction is (alpha - angle) anticlockwise/counterclockwise/widdershins from/of (u - direction):
-	decide on the direction at the azimuth of u - alpha and the inclination of u.
+To decide what list of angles is (u - direction) plus/+ (X - list of angles):
+	decide on the angle list of u plus x.
 
-To decide what direction is direction at (alpha - angle) and (i - angle):
-	let i be i modulo 360 degrees;
-	if i is at least 180 degrees:
-		let i be 360 degrees minus i;
-		let alpha be alpha plus 180 degrees;
-	if i is 0 degrees or i is 180 degrees:
-		let alpha be 0 degrees;
-	otherwise:
-		let alpha be alpha modulo 360 degrees;
+To decide what list of angles is (X - list of angles) plus/+ (u - direction):
+	decide on x plus the angle list of u.
+
+To decide what list of angles is (X - list of angles) plus/+ (Y - list of angles):
+	extend Y to the number of entries in X entries;
+	repeat with n running from 1 to the number of entries in X:
+		now entry n of X is entry n of X plus entry n of Y;
+	decide on X.
+
+To decide what list of angles is (u - direction) minus/- (v - direction):
+	decide on the angle list of u minus the angle list of v.
+
+To decide what list of angles is (u - direction) minus/- (X - list of angles):
+	decide on the angle list of u minus X.
+
+To decide what list of angles is (X - list of angles) minus/- (u - direction):
+	decide on X minus the angle list of u.
+
+To decide what list of angles is (X - list of angles) minus/- (Y - list of angles):
+	extend Y to the number of entries in X entries;
+	repeat with n running from 1 to the number of entries in X:
+		now entry n of X is entry n of X minus entry n of Y;
+	decide on X.
+
+To decide what list of angles is (X - list of angles) normalized:
+	let p be false;
+	let n be the number of entries in X;
+	while n is at least 1:
+		if p is true:
+			now entry n of X is entry n of X minus 180 degrees;
+			now p is false;
+		now entry n of X is entry n of X modulo 360 degrees;
+		if n is not 1 and entry n of X is greater than 180 degrees:
+			now entry n of X is 360 degrees minus entry n of X;
+			now p is true;
+		decrement n;
+	decide on X.
+
+To decide what object is direction/-- at (X - list of angles):
+	now X is X normalized;
 	repeat with u running through directions:
-		if the azimuth of u is alpha and the inclination of u is i:
+		if the angle list of u is X:
 			decide on u;
 	decide on nothing.
 
