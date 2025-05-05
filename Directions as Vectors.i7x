@@ -41,22 +41,25 @@ To decide what list of angles is (X - list of angles) plus/+ (u - direction):
 
 To decide what list of angles is (X - list of angles) plus/+ (Y - list of angles):
 	extend Y to the number of entries in X entries;
-	let z be true;
 	repeat with n running from 1 to the number of entries in X:
 		now entry n of X is entry n of X modulo 360 degrees;
 		now entry n of Y is entry n of Y modulo 360 degrees;
-		let d be entry n of X minus entry n of Y;
-		if d is less than 0 degrees:
-			let d be 0 degrees minus d;
-		if d is less than 180 degrees:
-			if d is not 0 degrees:
-				now z is false;
+		let the absolute difference be entry n of X minus entry n of Y;
+		if the absolute difference is less than 0 degrees:
+			let the absolute difference be 0 degrees minus the absolute difference;
+		if entry n of X is 0 degrees and the number of entries in X is not n and entry (n plus 1) in X is 0 degrees:
+			now entry n of X is entry n of Y;
+		otherwise if entry n of Y is 0 degrees and the number of entries in Y is not n and entry (n plus 1) in Y is 0 degrees:
+			do nothing;
+		otherwise if the absolute difference is 0 degrees:
+			do nothing;
+		otherwise if the absolute difference is less than 180 degrees:
 			now entry n of X is (entry n of X plus entry n of Y) divided by 2;
-		otherwise if d is not 180 degrees:
-			now z is false;
-			now entry n of X is (entry n of X plus entry n of Y plus 180 degrees) divided by 2;
-	if z is true:
-		decide on {};
+		otherwise if the absolute difference is 180 degrees:
+			now entry n of X is (entry n of X plus entry n of Y) divided by 2;
+		otherwise:
+			now entry n of X is (entry n of X plus entry n of Y minus 360 degrees) divided by 2;
+		now entry n of X is entry n of X modulo 360 degrees;
 	decide on X.
 
 To decide what list of angles is (u - direction) minus/- (v - direction):
@@ -70,22 +73,27 @@ To decide what list of angles is (X - list of angles) minus/- (u - direction):
 
 To decide what list of angles is (X - list of angles) minus/- (Y - list of angles):
 	extend Y to the number of entries in X entries;
-	let z be true;
 	repeat with n running from 1 to the number of entries in X:
 		now entry n of X is entry n of X modulo 360 degrees;
 		now entry n of Y is entry n of Y modulo 360 degrees;
-		let d be entry n of X minus entry n of Y;
-		if d is less than 0 degrees:
-			let d be 0 degrees minus d;
-		if d is less than 180 degrees:
-			if d is not 0 degrees:
-				now z is false;
-			now entry n of X is (entry n of X minus entry n of Y) divided by 2;
-		otherwise if d is not 180 degrees:
-			now z is false;
-			now entry n of X is (entry n of X minus entry n of Y plus 180 degrees) divided by 2;
-	if z is true:
-		decide on {};
+		if n is 1:
+			now entry n of Y is entry n of Y plus 180 degrees modulo 360 degrees;
+		otherwise:
+			now entry n of Y is 180 degrees minus entry n of Y modulo 360 degrees;
+		let the absolute difference be entry n of X minus entry n of Y;
+		if the absolute difference is less than 0 degrees:
+			let the absolute difference be 0 degrees minus the absolute difference;
+		if entry n of X is 0 degrees and the number of entries in X is not n and entry (n plus 1) in X is 0 degrees:
+			now entry n of X is entry n of Y;
+		otherwise if the absolute difference is 0 degrees:
+			do nothing;
+		otherwise if the absolute difference is less than 180 degrees:
+			now entry n of X is (entry n of X plus entry n of Y) divided by 2;
+		otherwise if the absolute difference is 180 degrees:
+			now entry n of X is (entry n of X plus entry n of Y) divided by 2;
+		otherwise:
+			now entry n of X is (entry n of X plus entry n of Y minus 360 degrees) divided by 2;
+		now entry n of X is entry n of X modulo 360 degrees;
 	decide on X.
 
 To decide what list of angles is (X - list of angles) normalized:
@@ -111,6 +119,8 @@ To decide what list of angles is (X - list of angles) normalized:
 
 To decide what object is direction/-- at (X - list of angles):
 	now X is X normalized;
+	if X is {}:
+		decide on nothing;
 	repeat with u running through directions:
 		if the angle list of u is X:
 			decide on u;
