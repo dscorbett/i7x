@@ -41,16 +41,18 @@ To decide what list of angles is (X - list of angles) plus/+ (u - direction):
 
 To decide what list of angles is (X - list of angles) plus/+ (Y - list of angles):
 	extend Y to the number of entries in X entries;
+	let state be 0;
 	repeat with n running from 1 to the number of entries in X:
 		now entry n of X is entry n of X modulo 360 degrees;
 		now entry n of Y is entry n of Y modulo 360 degrees;
 		let the absolute difference be entry n of X minus entry n of Y;
 		if the absolute difference is less than 0 degrees:
 			let the absolute difference be 0 degrees minus the absolute difference;
-		if entry n of X is 0 degrees and the number of entries in X is not n and entry (n plus 1) in X is 0 degrees:
+		if entry n of X is 0 degrees and the number of entries in X is not n:
 			now entry n of X is entry n of Y;
-		otherwise if entry n of Y is 0 degrees and the number of entries in Y is not n and entry (n plus 1) in Y is 0 degrees:
-			do nothing;
+			now state is 1;
+		otherwise if entry n of Y is 0 degrees and the number of entries in Y is not n:
+			now state is 1;
 		otherwise if the absolute difference is 0 degrees:
 			do nothing;
 		otherwise if the absolute difference is less than 180 degrees:
@@ -73,6 +75,7 @@ To decide what list of angles is (X - list of angles) minus/- (u - direction):
 
 To decide what list of angles is (X - list of angles) minus/- (Y - list of angles):
 	extend Y to the number of entries in X entries;
+	let state be 0;
 	repeat with n running from 1 to the number of entries in X:
 		now entry n of X is entry n of X modulo 360 degrees;
 		now entry n of Y is entry n of Y modulo 360 degrees;
@@ -83,8 +86,11 @@ To decide what list of angles is (X - list of angles) minus/- (Y - list of angle
 		let the absolute difference be entry n of X minus entry n of Y;
 		if the absolute difference is less than 0 degrees:
 			let the absolute difference be 0 degrees minus the absolute difference;
-		if entry n of X is 0 degrees and the number of entries in X is not n and entry (n plus 1) in X is 0 degrees:
+		if entry n of X is 0 degrees and the number of entries in X is not n and state is 0:
 			now entry n of X is entry n of Y;
+			now state is 1;
+		otherwise if entry n of Y is 0 degrees and the number of entries in Y is not n and state is 0:
+			now state is 1;
 		otherwise if the absolute difference is 0 degrees:
 			do nothing;
 		otherwise if the absolute difference is less than 180 degrees:
